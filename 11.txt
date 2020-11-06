@@ -1,1 +1,106 @@
-dadawdawd
+CREATE TABLE Clients(
+id int PRIMARY KEY,
+Surname char(100),
+Name char(100),
+Middlename char(100)
+)
+
+CREATE TABLE Employers(
+id int PRIMARY KEY,
+Surname char(100),
+Name char(100),
+Middlename char(100)
+)
+
+CREATE TABLE Products(
+id int PRIMARY KEY,
+Name char(100),
+P_Sum numeric(18,2)
+)
+
+CREATE TABLE Offices(
+id int PRIMARY KEY,
+Name char(100),
+Adress char(200)
+)
+
+CREATE TABLE Payment_Sys(
+id int PRIMARY KEY,
+Name char(100)
+)
+
+CREATE TABLE Credits(
+id int PRIMARY KEY,
+Client_id int,
+Product_id int,
+Emp_id int,
+Office_id int,
+FOREIGN KEY (Client_id) REFERENCES Clients(id),
+FOREIGN KEY (Product_id) REFERENCES Products(id),
+FOREIGN KEY (Emp_id) REFERENCES Employers(id),
+FOREIGN KEY (Office_id) REFERENCES Offices(id)
+);
+
+CREATE TABLE Cards(
+id int PRIMARY KEY,
+Client_id int,
+Emp_id int,
+Payment_Sys_id int,
+FOREIGN KEY (Client_id) REFERENCES Clients(id),
+FOREIGN KEY (Emp_id) REFERENCES Employers(id),
+FOREIGN KEY (Payment_Sys_id) REFERENCES Payment_Sys(id)
+);
+
+CREATE TABLE Client_Office(
+id int PRIMARY KEY,
+Client_id int,
+Office_id int,
+FOREIGN KEY (Client_id) REFERENCES Clients(id),
+FOREIGN KEY (Office_id) REFERENCES Offices(id)
+);
+
+
+CREATE PROCEDURE generate_Offices
+AS
+DECLARE VARIABLE loop int DEFAULT 0;
+begin
+WHILE (loop<100000)DO
+BEGIN
+	loop=:loop+1;
+	INSERT INTO Client_Office VALUES (:loop,MOD(:loop,502)+1,MOD(:loop,3)+1);
+END
+END;
+
+
+ALTER PROCEDURE generate_Credits
+AS
+DECLARE VARIABLE loop int DEFAULT 0;
+begin
+WHILE (loop<100000)DO
+BEGIN
+	loop=:loop+1;
+	INSERT INTO Credits VALUES (:loop,MOD(:loop,502)+1,MOD(:loop,6)+1,MOD(:loop,10)+1,MOD(:loop,3)+1);
+END
+END;
+
+CREATE PROCEDURE generate_Cards
+AS
+DECLARE VARIABLE loop int DEFAULT 0;
+begin
+WHILE (loop<100000)DO
+BEGIN
+	loop=:loop+1;
+	INSERT INTO Cards VALUES (:loop,MOD(:loop,502)+1,MOD(:loop,10)+1,MOD(:loop,3)+1);
+END
+END;
+
+
+
+EXECUTE PROCEDURE generate_Offices;
+SELECT * FROM Client_Office;
+
+EXECUTE PROCEDURE generate_Credits;
+SELECT * FROM Credits;
+
+EXECUTE PROCEDURE generate_Cards;
+SELECT * FROM Cards;
