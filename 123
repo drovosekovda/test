@@ -1,3 +1,48 @@
+
+CREATE ROLE admin_db;
+GRANT SELECT,INSERT,UPDATE,DELETE,REFERENCES ON Clients TO admin_db;
+GRANT SELECT,INSERT,UPDATE,DELETE,REFERENCES ON Employers TO admin_db;
+GRANT SELECT,INSERT,UPDATE,DELETE,REFERENCES ON Products TO admin_db;
+GRANT SELECT,INSERT,UPDATE,DELETE,REFERENCES ON Offices TO admin_db;
+GRANT SELECT,INSERT,UPDATE,DELETE,REFERENCES ON Payment_Sys TO admin_db;
+GRANT SELECT,INSERT,UPDATE,DELETE,REFERENCES ON Credits TO admin_db;
+GRANT SELECT,INSERT,UPDATE,DELETE,REFERENCES ON Cards TO admin_db;
+GRANT SELECT,INSERT,UPDATE,DELETE,REFERENCES ON Client_Office TO admin_db;
+GRANT EXECUTE ON PROCEDURE GENERATE_CARDS TO admin_db;
+GRANT EXECUTE ON PROCEDURE GENERATE_CREDITS TO admin_db;
+GRANT EXECUTE ON PROCEDURE GENERATE_OFFICES TO admin_db;
+GRANT EXECUTE ON PROCEDURE user_role TO admin_db;
+
+CREATE ROLE office_emp;
+GRANT SELECT,INSERT ON Clients TO office_emp;
+GRANT SELECT,INSERT ON Credits TO office_emp;
+GRANT SELECT,INSERT ON Cards TO office_emp;
+GRANT SELECT,INSERT ON Client_Office TO office_emp;
+GRANT SELECT ON Employers TO office_emp;
+GRANT SELECT ON Products TO office_emp;
+GRANT SELECT ON Offices TO office_emp;
+GRANT SELECT ON Payment_Sys TO office_emp;
+
+CREATE ROLE support;
+GRANT SELECT ON Clients TO support;
+GRANT SELECT ON Employers TO support;
+GRANT SELECT ON Products TO support;
+GRANT SELECT ON Offices TO support;
+GRANT SELECT ON Payment_Sys TO support;
+GRANT SELECT ON Credits TO support;
+GRANT SELECT ON Cards TO support;
+GRANT SELECT ON Client_Office TO support;
+
+CREATE PROCEDURE user_role(user_db varchar(100),role_db varchar(100))
+AS
+DECLARE VARIABLE ex_str varchar(400);
+BEGIN
+	ex_str = 'GRANT '||:role_db||' TO '||:user_db||';';
+	EXECUTE STATEMENT (:ex_str);
+END
+
+
+
 insert into Clients Values (2,'Солодский','Андриян','Эрнстович');
 insert into Clients Values (3,'Пономарёва','Лариса','Фомевна');
 insert into Clients Values (4,'Витвинский','Станислав','Агапович');
