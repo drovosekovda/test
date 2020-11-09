@@ -1,3 +1,34 @@
+CREATE TABLE audit_db(
+id int PRIMARY KEY,
+TABLE_name varchar(100),
+USER_name varchar(100),
+trig_name varchar(100),
+trig_time TIMESTAMP
+);
+CREATE TRIGGER credits_insert for Credits AFTER INSERT
+AS
+DECLARE VARIABLE id int;
+BEGIN
+	SELECT count(*) FROM audit_db INTO :id;
+	INSERT INTO audit_db VALUES(:id+1,'Credits','INSERT',CURRENT_USER,CURRENT_TIME);
+END
+
+CREATE TRIGGER credits_update for Credits AFTER UPDATE
+AS
+DECLARE VARIABLE id int;
+BEGIN
+	SELECT count(*) FROM audit_db INTO :id;
+	INSERT INTO audit_db VALUES(:id+1,'Credits','UPDATE',CURRENT_USER,CURRENT_TIME);
+END
+
+CREATE TRIGGER credits_delete for Credits AFTER DELETE
+AS
+DECLARE VARIABLE id int;
+BEGIN
+	SELECT count(*) FROM audit_db INTO :id;
+	INSERT INTO audit_db VALUES(:id+1,'Credits','DELETE',CURRENT_USER,CURRENT_TIME);
+END
+
 
 CREATE ROLE admin_db;
 GRANT SELECT,INSERT,UPDATE,DELETE,REFERENCES ON Clients TO admin_db;
