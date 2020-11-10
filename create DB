@@ -1,0 +1,25 @@
+SQL> CREATE DATABASE nina
+2 USER SYS IDENTIFIED BY sys_password
+3 USER SYSTEM IDENTIFIED BY system_password
+4 LOGFILE GROUP 1 ('/u01/app/oracle/oradata/nina/redo01.log') SIZE 100M,
+a. GROUP 2 ('/u01/app/oracle/oradata/nina/redo02.log') SIZE 100M,
+b. GROUP 3 ('/u01/app/oracle/oradata/nina/redo03.log') SIZE 100M
+5 MAXLOGFILES 5
+6 MAXLOGMEMBERS 5
+7 MAXLOGHISTORY 1
+8 MAXDATAFILES 300
+9 CHARACTER SET US7ASCII
+10 NATIONAL CHARACTER SET AL16UTF16
+11 EXTENT MANAGEMENT LOCAL
+12 DATAFILE '/u01/app/oracle/oradata/nina/system01.dbf' SIZE 500M REUSE
+13 SYSAUX DATAFILE '/u01/app/oracle/oradata/nina/sysaux01.dbf' SIZE 325M REUSE
+14 DEFAULT TABLESPACE users
+15 DATAFILE '/u01/app/oracle/oradata/nina/users01.dbf'
+16 SIZE 500M REUSE AUTOEXTEND ON MAXSIZE UNLIMITED
+17 DEFAULT TEMPORARY TABLESPACE tempts1
+18 TEMPFILE '/u01/app/oracle/oradata/nina/temp01.dbf'
+19 SIZE 200M REUSE
+20 UNDO TABLESPACE undotbs
+21 DATAFILE '/u01/app/oracle/oradata/nina/undotbs01.dbf'
+22 SIZE 200M REUSE AUTOEXTEND ON MAXSIZE UNLIMITED;
+Database created.
